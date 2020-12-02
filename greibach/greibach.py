@@ -157,6 +157,9 @@ def mk_example(ex_num, v_0, p_0, t):
         print(colored("Each production begining with a terminal followed by a word of variables.", 'white'))
         p_i = terminal_followed_by_word_of_variables(t, p_i)
         print_prod(p_i)
+        print(colored("\n#EXTRA[NOT GREIBACH]#\nRight side with two variables.", 'red', attrs=['bold']))
+        p_i = right_side_with_two_variables(p_i)
+        print_prod(p_i)
     
 if __name__ == "__main__":
     print(colored("Examples of transformations from CFG to Greibach normal form", attrs=['bold']))
