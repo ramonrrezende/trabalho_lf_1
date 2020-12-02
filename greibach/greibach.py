@@ -102,6 +102,23 @@ def terminal_followed_by_word_of_variables(t, p_0):
         p[key] = new_pkey_i
     return p
 
+## EXTRA ##
+#lado direito com apenas duas variaveis
+def right_side_with_two_variables(p_0):
+    p = copy.deepcopy(p_0)
+    new_keys = {}
+    updated = False
+    for key in p:
+        for i in range(len(p[key])):
+            if(type(p[key][i]) == list and len(p[key][i]) > 2):
+                new_keys.update({'D_{}_{}'.format(key, i): [p[key][i][1:]]})
+                p[key][i] = p[key][i][:1] + ['D_{}_{}'.format(key, i)]
+                updated = True
+    p.update(new_keys)
+    if(updated):
+        p = right_side_with_two_variables(p)
+    return p
+
 #alteração feita para melhorar a visualização das produções
 def print_prod(p):
     for key in p.keys():
