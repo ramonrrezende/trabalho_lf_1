@@ -95,7 +95,7 @@ def terminal_followed_by_word_of_variables(p_0):
     for key in p:
         for i in range(len(p[key])):
             if(type(p[key][i]) == list and len(p[key][i]) > 2):
-                new_keys.update({'D_{}_{}'.format(key, i): p[key][i][1:]})
+                new_keys.update({'D_{}_{}'.format(key, i): [p[key][i][1:]]})
                 p[key][i] = p[key][i][:1] + ['D_{}_{}'.format(key, i)]
                 updated = True
     p.update(new_keys)
