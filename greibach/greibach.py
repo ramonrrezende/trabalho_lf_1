@@ -88,19 +88,18 @@ def begin_with_terminal(v_0, p_0):
     print_prod(p)
     return p
 
-def terminal_followed_by_word_of_variables(p_0):
+#adicao de parametro com simbolos terminais pra verificacao da ultima etapa
+def terminal_followed_by_word_of_variables(t, p_0):
     p = copy.deepcopy(p_0)
-    new_keys = {}
-    updated = False
     for key in p:
+        new_pkey_i = []
         for i in range(len(p[key])):
-            if(type(p[key][i]) == list and len(p[key][i]) > 2):
-                new_keys.update({'D_{}_{}'.format(key, i): [p[key][i][1:]]})
-                p[key][i] = p[key][i][:1] + ['D_{}_{}'.format(key, i)]
-                updated = True
-    p.update(new_keys)
-    if(updated):
-        p = terminal_followed_by_word_of_variables(p)
+            if p[key][i][0] not in t:
+                for prod in p[p[key][i][0]]:
+                    new_pkey_i.append(prod + p[key][i][1:])
+            else:
+                new_pkey_i.append(p[key][i])
+        p[key] = new_pkey_i
     return p
 
 #alteração feita para melhorar a visualização das produções
@@ -111,7 +110,8 @@ def print_prod(p):
             print(colored(" | ", 'white', attrs=['bold']) + colored(" ".join(rhs), 'cyan'), end='')
         print()
     
-def mk_example(ex_num, v_0, p_0):
+#adicao de parametro com simbolos terminais pra verificacao da ultima etapa
+def mk_example(ex_num, v_0, p_0, t):
     pp = pprint.PrettyPrinter(indent=4)
     print(colored("Example " + str(ex_num), attrs=['bold']))
     print("Original production set.")
@@ -138,7 +138,7 @@ def mk_example(ex_num, v_0, p_0):
         print(colored("Each production begining with a terminal.", 'grey'))
         p_i = begin_with_terminal(v_0, p_i)   
         print(colored("Each production begining with a terminal followed by a word of variables.", 'white'))
-        p_i = terminal_followed_by_word_of_variables(p_i)
+        p_i = terminal_followed_by_word_of_variables(t, p_i)
         print_prod(p_i)
     
 if __name__ == "__main__":
@@ -149,12 +149,12 @@ if __name__ == "__main__":
     t = ["a", "b"]
     p_0 = { "S" : [["A", "A"], ["a"]], "A" : [["S", "S"], ["b"]] }
     s  = "S"
-    mk_example(1, v_0, p_0)
+    mk_example(1, v_0, p_0, t)
 
     ### Example 2
     v1 = ["A", "B", "C"]
     t1 = ["a", "b"]
     p1 = { "A" : [["B", "C"]], "B" : [["C", "A"], ["b"]], "C" : [["A", "B"], ["a"]] }
     s1  = "A"
-    mk_example(2, v1, p1)
+    mk_example(2, v1, p1, t1)
     
