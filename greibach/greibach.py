@@ -22,8 +22,6 @@ def sort_variables(v):
 
 def r_lte_s(v, p_0):
     p = copy.deepcopy(p_0)
-    #print(p)
-    #print(v)
     for a_r in v:
         for a_s in v: 
             if v.index(a_s) < v.index(a_r):
@@ -66,10 +64,6 @@ def left_recursion_elimination(v, p_0):
 def begin_with_terminal(v_0, p_0):
     p = copy.deepcopy(p_0)
     for i in range(len(v_0) - 2, -1, -1):
-        print(p[v_0[i]][0][0])
-        print(v_0[i + 1])
-        #print(v_0)
-        #print(p)
         new_pv0i = []
         for j in range(len(p[v_0[i]])):
             if(p[v_0[i]][j][0] == v_0[i + 1]):
@@ -91,12 +85,6 @@ def begin_with_terminal(v_0, p_0):
                 else:
                     new_pkey.append(p[key][j])
             p[key] = new_pkey
-
-    #print(p)
-                    
-                
-    #pass
-    print("RAMON: ")
     print_prod(p)
     return p
 
@@ -111,7 +99,6 @@ def terminal_followed_by_word_of_variables(p_0):
                 p[key][i] = p[key][i][:1] + ['D_{}_{}'.format(key, i)]
                 updated = True
     p.update(new_keys)
-    #print_prod(p)
     if(updated):
         p = terminal_followed_by_word_of_variables(p)
     return p
@@ -149,19 +136,16 @@ def mk_example(ex_num, v_0, p_0):
         p_i = left_recursion_elimination(v, p_i)
         print_prod(p_i)
         print(colored("Each production begining with a terminal.", 'grey'))
-        p_i = begin_with_terminal(v_0, p_i)
-        pp.pprint("TO DO!")    
+        p_i = begin_with_terminal(v_0, p_i)   
         print(colored("Each production begining with a terminal followed by a word of variables.", 'white'))
         p_i = terminal_followed_by_word_of_variables(p_i)
         print_prod(p_i)
-        pp.pprint("TO DO!")
     
 if __name__ == "__main__":
     print(colored("Examples of transformations from CFG to Greibach normal form", attrs=['bold']))
 
     ### Example 1
-    #v_0 = ["A", "S"]
-    v_0 = ["S", "A"]
+    v_0 = ["A", "S"]
     t = ["a", "b"]
     p_0 = { "S" : [["A", "A"], ["a"]], "A" : [["S", "S"], ["b"]] }
     s  = "S"
